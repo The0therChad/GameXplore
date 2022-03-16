@@ -1,7 +1,7 @@
 from discord.ext import commands
 from api import query_search
 
-class NotificationCog(commands.Cog):
+class QueryCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
     
@@ -10,6 +10,7 @@ class NotificationCog(commands.Cog):
         await ctx.send("Jello!")
 
     @commands.command(name="search")
+    @commands.cooldown(rate=1, per=2)
     async def search(self, ctx: commands.Context, *, text: str):
         """Search the API for games by name."""
         search_results = query_search("games", search=text)
@@ -24,4 +25,4 @@ class NotificationCog(commands.Cog):
         await ctx.send(msg)
 
 def setup(bot: commands.Bot):
-    bot.add_cog(NotificationCog(bot))
+    bot.add_cog(QueryCog(bot))
