@@ -4,11 +4,18 @@ from settings import ID, TOKEN
 
 wrapper = IGDBWrapper(ID, TOKEN)
 
-"""With a wrapper instance already created"""
-# JSON API request
-byte_array = wrapper.api_request(
-    "games", 'fields name, platforms; search "destiny";')
-# parse into JSON however you like...
-result = json.loads(byte_array)
+def query(endpoint: str, fields = None, where = None):
+    """Query the API with desired parameters"""
+    request = wrapper.api_request(
+        f"{endpoint}, fields {fields}; where {where}"
+    )
+    result = json.loads(request)
+    return result
 
-print(result)
+def query_search(endpoint: str, fields = "name", search = None):
+    """Search the API with desired parameters"""
+    request = wrapper.api_request(
+        endpoint, f'fields {fields}; search "{search}";'
+    )
+    result = json.loads(request)
+    return result
